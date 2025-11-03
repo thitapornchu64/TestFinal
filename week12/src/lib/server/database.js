@@ -16,7 +16,16 @@ export function getTodos(userid) {
 
 // @ts-ignore
 export function createTodos(userid,description) {
+    if (description === '') {
+        throw new Error('Todo must have a description')
+    }    
+    
     const todos = db.get(userid)
+
+    // @ts-ignore
+    if (todos.find((todo) => todo.description === description)) {
+        throw new Error('todo must be unique')
+    }
 
     todos.push({
         id: crypto.randomUUID(),
@@ -26,7 +35,7 @@ export function createTodos(userid,description) {
 }
 
 // @ts-ignore
-export function deleteTodos(userid,tpdpid) {
+export function deleteTodos(userid,todoid) {
     const todos = db.get(userid)
     // @ts-ignore
     const index = todos.findIndex((todo) => todo.id === todoid)
