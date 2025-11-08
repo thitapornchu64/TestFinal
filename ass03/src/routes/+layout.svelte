@@ -1,12 +1,16 @@
 <script>
+// @ts-nocheck
+
   let { children } = $props()
 </script>
 
 <nav class="nav">
   <a href="/">home</a>
-  <a href="/Survey">วิเคราะห์การผลิต</a>
-  <a href="/Status">ติดตามสถานะ</a>
-  <a href="/settings">settings</a>
+  <a href="/survey">ประเมิน GAP ด้วยตัวเอง</a>
+  <a href="/status">สถานะการยื่นคำขอ</a>
+  <a href="/profile">ข้อมูลส่วนตัว</a>
+  <a href="/farmer">Admin</a>
+
 </nav>
 
 {@render children()}
