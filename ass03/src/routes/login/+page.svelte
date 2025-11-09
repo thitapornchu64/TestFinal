@@ -1,35 +1,26 @@
 <script>
     import { goto } from '$app/navigation';
-    // @ts-ignore
-    let { data, form } = $props();
-    // svelte-ignore non_reactive_update
     let username = '';
-    // svelte-ignore non_reactive_update
     let password = '';
-    // svelte-ignore non_reactive_update
     let error = '';
 
     function validateLogin() {
         error = '';
         if (!username && !password) {
             error = "กรุณากรอก Username และ Password";
-            alert(error);
             return false;
         }
         if (!username) {
             error = "กรุณากรอก Username";
-            alert(error);
             return false;
         }
         if (!password) {
             error = "กรุณากรอก Password";
-            alert(error);
             return false;
         }
         return true;
     }
 
-    // @ts-ignore
     async function handleLogin(event) {
         event.preventDefault();
 
@@ -45,16 +36,13 @@
             const data = await res.json();
 
             if (data.success) {
-                alert("Login สำเร็จ!");
                 goto('/dashboard');
             } else {
                 error = data.message || 'Username หรือ Password ไม่ถูกต้อง';
-                alert(error);
             }
         } catch (err) {
             console.error(err);
             error = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
-            alert(error);
         }
     }
 </script>
@@ -62,11 +50,13 @@
 <main class="background-image">
   <div class="header">
     <h1>เข้าสู่ระบบ</h1>
-    <!-- svelte-ignore event_directive_deprecated -->
     <form on:submit={handleLogin}>
       <div>
         <input type="text" placeholder="Username" bind:value={username} />
         <input type="password" placeholder="Password" bind:value={password} />
+        {#if error}
+          <div class="error">{error}</div>
+        {/if}
       </div>
       <button type="submit">Login</button>
     </form>
@@ -85,6 +75,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-attachment: fixed;
 }
 
 .header {

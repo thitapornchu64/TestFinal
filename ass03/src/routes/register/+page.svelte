@@ -27,6 +27,7 @@ function validateStep1() {
   if (!registerForm.password) errors.password = "*โปรดกรอกรหัสผ่าน";
   if (registerForm.password !== registerForm.confirmPassword) errors.confirmPassword = "*รหัสผ่านไม่ตรงกัน";
   if (!registerForm.firstname) errors.firstname = "*โปรดกรอกชื่อ";
+  if (!registerForm.lastname) errors.lastname = "*โปรดกรอกนามสกุล";
   if (!registerForm.idcard || !/^\d{13}$/.test(registerForm.idcard)) errors.idcard = "*กรุณากรอกเลขบัตร 13 หลัก";
   if (!registerForm.phone || !/^\d{10}$/.test(registerForm.phone)) errors.phone = "*กรุณากรอกเบอร์โทร";
   return Object.keys(errors).length === 0;
@@ -69,33 +70,40 @@ function handleStep2({ result }) {
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>ประเภทผู้ใช้</label>
-      {#if errors.userType}<div class="error">{errors.userType}</div>{/if}
-      <div class="user-type">
+      <div class="input-wrapper">
+        <div class="user-type">
         <button type="button" class="option {registerForm.userType==='เกษตรกร'?'active':''}" on:click={() => registerForm.userType='เกษตรกร'}>เกษตรกร</button>
         <button type="button" class="option {registerForm.userType==='นิติบุคคล'?'active':''}" on:click={() => registerForm.userType='นิติบุคคล'}>นิติบุคคล</button>
+        </div>
+        {#if errors.userType}<div class="error">{errors.userType}</div>{/if}
+      </div>
+    </div>
+    
+    <div class="field">
+      <!-- svelte-ignore a11y_label_has_associated_control -->
+      <label>อีเมล</label>
+      <div class="input-wrapper">
+        <input type="email" name="email" bind:value={registerForm.email} />
+        {#if errors.email}<div class="error">{errors.email}</div>{/if}
       </div>
     </div>
 
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
-      <!-- svelte-ignore a11y_label_has_associated_control -->
-      <label>อีเมล</label>
-      {#if errors.email}<div class="error">{errors.email}</div>{/if}
-      <input type="email" name="email" bind:value={registerForm.email} />
-    </div>
-
-    <div class="field">
-      <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>รหัสผ่าน</label>
-      {#if errors.password}<div class="error">{errors.password}</div>{/if}
-      <input type="password" name="password" bind:value={registerForm.password} />
+      <div class="input-wrapper">
+        <input type="password" name="password" bind:value={registerForm.password} />
+        {#if errors.password}<div class="error">{errors.password}</div>{/if}
+      </div>
     </div>
 
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>ยืนยันรหัสผ่าน</label>
-      {#if errors.confirmPassword}<div class="error">{errors.confirmPassword}</div>{/if}
-      <input type="password" name="confirmPassword" bind:value={registerForm.confirmPassword} />
+      <div class="input-wrapper">
+        <input type="password" name="confirmPassword" bind:value={registerForm.confirmPassword} />
+        {#if errors.confirmPassword}<div class="error">{errors.confirmPassword}</div>{/if}
+      </div>
     </div>
 
     <!-- svelte-ignore a11y_label_has_associated_control -->
@@ -112,28 +120,38 @@ function handleStep2({ result }) {
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>ชื่อ</label>
-      {#if errors.firstname}<div class="error">{errors.firstname}</div>{/if}
-      <input type="text" name="firstname" bind:value={registerForm.firstname} />
+      <div class="input-wrapper">
+        <input type="text" name="firstname" bind:value={registerForm.firstname} />
+        {#if errors.firstname}<div class="error">{errors.firstname}</div>{/if}
+      </div>
     </div>
 
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>นามสกุล</label>
-      <input type="text" name="lastname" bind:value={registerForm.lastname} />
+      <div class="input-wrapper">
+        <input type="text" name="lastname" bind:value={registerForm.lastname} />
+        {#if errors.lastname}<div class="error">{errors.lastname}</div>{/if}
+      </div>
     </div>
 
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>หมายเลขบัตรประชาชน</label>
-      {#if errors.idcard}<div class="error">{errors.idcard}</div>{/if}
-      <input type="text" name="idcard" maxlength="13" bind:value={registerForm.idcard} />
+      <div class="input-wrapper">
+        <input type="text" name="idcard" maxlength="13" bind:value={registerForm.idcard} />
+        {#if errors.idcard}<div class="error">{errors.idcard}</div>{/if}
+      </div>
     </div>
 
     <div class="field">
       <!-- svelte-ignore a11y_label_has_associated_control -->
       <label>เบอร์โทรศัพท์</label>
-      {#if errors.phone}<div class="error">{errors.phone}</div>{/if}
-      <input type="text" name="phone" bind:value={registerForm.phone} />
+      <div class="input-wrapper">
+        <input type="text" name="phone" bind:value={registerForm.phone} />
+        {#if errors.phone}<div class="error">{errors.phone}</div>{/if}
+      </div>
+
     </div>
 
     <div class="btn-group">
@@ -144,28 +162,36 @@ function handleStep2({ result }) {
 
 <!-- Step 2 Form -->
 <form method="POST" use:enhance={{ result: handleStep2 }} class="register">
-  <h2>ข้อมูลพันธุ์ทุเรียน</h2>
   <div class="card">
-    {#each ['หมอนทอง','ก้านยาว','ชะนี','หลงลับแล','กระดุมทอง','พวงมณี','อื่นๆ'] as type}
-      <label class="radio">
-        <input type="radio" bind:group={durianType} value={type} />
-        <span>{type}</span>
-      </label>
-    {/each}
+  <h2>ระบุพันธุ์ทุเรียน</h2>
+    <div class="radio-group">
+      {#each ['หมอนทอง','ก้านยาว','ชะนี','หลงลับแล','กระดุมทอง','พวงมณี','อื่นๆ'] as type}
+        <label class="radio">
+          <input type="radio" bind:group={durianType} value={type} />
+          <span>{type}</span>
+        </label>
+      {/each}
+    </div>
 
-    {#if errors.durianType}<div class="error">{errors.durianType}</div>{/if}
+    {#if errors.durianType}
+      <div class="error">{errors.durianType}</div>
+    {/if}
 
-    {#if durianType==='อื่นๆ'}
+    {#if durianType === 'อื่นๆ'}
       <div class="field">
         <!-- svelte-ignore a11y_label_has_associated_control -->
         <label>ระบุพันธุ์อื่นๆ</label>
         <input type="text" bind:value={registerForm.durianOther} />
-        {#if errors.durianOther}<div class="error">{errors.durianOther}</div>{/if}
+        {#if errors.durianOther}
+          <div class="error">{errors.durianOther}</div>
+        {/if}
       </div>
     {/if}
 
     <div class="btn-group">
-      <button type="submit" on:click={(e) => { if(!validateStep2()) e.preventDefault(); }}>ยืนยัน</button>
+      <button type="submit" on:click={(e) => { if (!validateStep2()) e.preventDefault(); }}>
+        ยืนยัน
+      </button>
     </div>
   </div>
 </form>
@@ -269,10 +295,27 @@ button:hover {
   background-color: #8cb6a1;
 }
 
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .radio {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  background: #f3f3f3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.radio input {
+  margin-right: 6px;
+}
+
+.radio:hover {
+  background: #e2e2e2;
 }
 </style>
