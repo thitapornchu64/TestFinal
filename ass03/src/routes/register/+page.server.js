@@ -17,17 +17,19 @@ export const actions = {
     if (!data.password) errors.password = 'โปรดกรอกรหัสผ่าน';
     if (data.password !== data.confirmPassword) errors.confirmPassword = 'รหัสผ่านไม่ตรงกัน';
     if (!data.firstname) errors.firstname = 'โปรดกรอกชื่อ';
+    // @ts-ignore
     if (!data.idcard || !/^\d{13}$/.test(data.idcard)) errors.idcard = 'กรุณากรอกเลขบัตร 13 หลัก';
+    // @ts-ignore
     if (!data.phone || !/^\d{10}$/.test(data.phone)) errors.phone = 'กรุณากรอกเบอร์โทร';
 
     if (Object.keys(errors).length > 0) {
       return fail(400, { data, errors }); // ✅ ส่งกลับไปให้ form แสดง
     }
 
-    // ✅ Hash Password ก่อนเก็บ
+    // @ts-ignore
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    // ✅ บันทึกข้อมูลลง database
+    
     const userId = await register({
       userType: data.userType,
       email: data.email,
@@ -63,12 +65,13 @@ export const actions = {
     }
 
     // ✅ เปรียบเทียบ password
+    // @ts-ignore
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return fail(400, { error: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
     }
 
     // ✅ Login สำเร็จ → ไปหน้าหลัง login
-    throw redirect(303, '/dashboard');
+    throw redirect(303, '/login');
   }
 };

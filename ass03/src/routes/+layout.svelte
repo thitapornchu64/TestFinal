@@ -11,7 +11,7 @@
 </script>
 
 <nav class="navbar">
-  <div class="logo">🌱 DURIAN GAP SYSTEM</div>
+  <div class="logo">🌱 DURIAN GAP</div>
   <ul class="menu">
     {#each menuItems as item}
       <li><a href={item.href}>{item.title}</a></li>

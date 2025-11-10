@@ -95,6 +95,7 @@
 
       {#each Object.entries(data.personal) as [key, value]}
         <div class="field">
+          <!-- svelte-ignore a11y_label_has_associated_control -->
           <label>{labels.personal[key]}</label>
 
           {#if editingSection === 'personal'}
@@ -145,6 +146,7 @@
 
       {#each Object.entries(data.durian) as [key, value]}
         <div class="field">
+          <!-- svelte-ignore a11y_label_has_associated_control -->
           <label>{labels.durian[key]}</label>
           {#if editingSection === 'durian'}
             {#if key === 'flowering_startdate'}
@@ -175,6 +177,7 @@
 
         {#each Object.entries(data.farm) as [key, value]}
           <div class="field">
+            <!-- svelte-ignore a11y_label_has_associated_control -->
             <label>{labels.farm[key]}</label>
 
             {#if editingSection === 'farm'}
@@ -203,6 +206,7 @@
 
       {#each Object.entries(data.titledeed) as [key, value]}
         <div class="field">
+          <!-- svelte-ignore a11y_label_has_associated_control -->
           <label>{labels.titledeed[key]}</label>
 
           {#if editingSection === 'titledeed'}

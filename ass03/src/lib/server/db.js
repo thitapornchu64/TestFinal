@@ -70,7 +70,7 @@ export function login(email, password) {
   return user;
 }
 
-// ฟังก์ชันทดสอบดึงข้อมูลทั้งหมด 
+//ทดสอบดึงข้อมูลทั้งหมด 
 export function getAllUsers() {
   const stmt = db.prepare('SELECT * FROM users');
   return stmt.all();

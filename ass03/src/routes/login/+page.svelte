@@ -1,65 +1,58 @@
 <script>
-    import { goto } from '$app/navigation';
+    export let form;
     let username = '';
     let password = '';
     let error = '';
 
-    function validateLogin() {
+     $: if (form?.error) {
+    error = form.error;
+  }
+    
+
+    // @ts-ignore
+    function validateLogin(event) {
+        // @ts-ignore
         error = '';
+
         if (!username && !password) {
-            error = "กรุณากรอก Username และ Password";
-            return false;
-        }
-        if (!username) {
-            error = "กรุณากรอก Username";
-            return false;
-        }
-        if (!password) {
-            error = "กรุณากรอก Password";
-            return false;
-        }
-        return true;
-    }
-
-    async function handleLogin(event) {
+        error = "กรุณากรอก Username และ Password";
         event.preventDefault();
-
-        if (!validateLogin()) return; 
-
-        try {
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            const data = await res.json();
-
-            if (data.success) {
-                goto('/dashboard');
-            } else {
-                error = data.message || 'Username หรือ Password ไม่ถูกต้อง';
-            }
-        } catch (err) {
-            console.error(err);
-            error = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+        return;
         }
-    }
+    
+        if (!username) {
+        error = "กรุณากรอก Username";
+        event.preventDefault();
+        return;
+        }
+    
+        if (!password) {
+        error = "กรุณากรอก Password";
+        event.preventDefault();
+        return;
+        }
+      }
+
 </script>
+
 
 <main class="background-image">
   <div class="header">
     <h1>เข้าสู่ระบบ</h1>
-    <form on:submit={handleLogin}>
+
+    <form method="POST" on:submit={validateLogin}>
       <div>
-        <input type="text" placeholder="Username" bind:value={username} />
-        <input type="password" placeholder="Password" bind:value={password} />
+        <input type="text" name="username" placeholder="Username" bind:value={username} />
+        <input type="password" name="password" placeholder="Password" bind:value={password} />
+
         {#if error}
           <div class="error">{error}</div>
         {/if}
       </div>
+
       <button type="submit">Login</button>
     </form>
+
     <a href="/register">Register</a>
   </div>
 </main>

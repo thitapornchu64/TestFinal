@@ -155,7 +155,7 @@ function handleStep2({ result }) {
     </div>
 
     <div class="btn-group">
-      <button type="submit" on:click={(e) => { if(!validateStep1()) e.preventDefault(); }}>ถัดไป</button>
+      <button type="submit" on:click={(e) => { if(!validateStep1()) e.preventDefault(); }}>ส่งข้อมูล</button>
     </div>
   </div>
 </form>
