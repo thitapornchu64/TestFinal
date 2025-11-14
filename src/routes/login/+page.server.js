@@ -1,42 +1,41 @@
-import { redirect, fail } from '@sveltejs/kit';
-import { db, login } from '$lib/server/db.js';
-import bcrypt from 'bcrypt'; 
+import { fail, redirect } from '@sveltejs/kit';
+// @ts-ignore
+import { db } from '$lib/server/database'; // ต้องมี db.register ใช้งานได้จริง
 
 export const actions = {
-    create: async ({ request, cookies }) => {
-        const data = await request.formData();
-        const username = data.get('username');
-        const password = data.get('password');
+  login: async ({ request, cookies }) => {
 
-        if (!username || !password) {
-            return fail(422, { error: 'กรุณากรอก Username และ Password' });
-        }
+    const form = await request.formData();
+    const username = form.get('username')?.trim();
+    const password = form.get('password')?.trim();
 
-        try {
-            const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
-
-            if (!user) {
-                return fail(422, { error: 'ไม่พบ Username นี้' });
-            }
-
-            // @ts-ignore
-            const match = await bcrypt.compare(password, user.password);
-            if (!match) {
-                return fail(422, { error: 'Password ไม่ถูกต้อง' });
-            }
-
-            cookies.set('session_id', user.id, {
-                httpOnly: true,
-                path: '/',
-                sameSite: 'strict',
-                secure: false,
-                maxAge: 60 * 60 * 24
-            });
-
-            throw redirect(303, '/profile');
-
-        } catch (err) {
-            return fail(500, { error: 'Server Error: ' + err.message });
-        }
+    // ❌ ถ้าช่องว่าง ให้แสดง error
+    if (!username || !password) {
+      return fail(400, { error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     }
+
+    // ✔ ค้นหา user จาก db
+    let foundUser = null;
+    for (const [userid, user] of db.register.entries()) {
+      if (user.email === username && user.password === password) {
+        foundUser = { userid, ...user };
+        break;
+      }
+    }
+
+    // ❌ ไม่พบ user หรือ password ไม่ตรง
+    if (!foundUser) {
+      return fail(400, { error: 'Username หรือ Password ไม่ถูกต้อง' });
+    }
+
+    // ✔ ตั้ง session cookie
+    cookies.set('userid', foundUser.userid, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 // 1 วัน
+    });
+
+    throw redirect(303, '/survey');
+  }
 };
