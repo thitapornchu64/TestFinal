@@ -1,8 +1,0 @@
-GET http://127.0.0.1:8000/trips/5
-
-POST http://127.0.0.1:8000/trips/
-
-{
-    "duration" : 10,
-    "group_size" : 10
-}
