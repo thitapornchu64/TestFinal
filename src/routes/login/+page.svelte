@@ -1,18 +1,15 @@
 <script>
-  // @ts-ignore
-  export let form;
+    export let form;
+    let username = '';
+    let password = '';
+    let error = '';
 
-  let username = '';
-  let password = '';
-  let error = '';
-
- // @ts-ignore
-   $: if (form?.error) {
-    // @ts-ignore
+     $: if (form?.error) {
     error = form.error;
   }
+    
 
-   // @ts-ignore
+    // @ts-ignore
     function validateLogin(event) {
         // @ts-ignore
         error = '';
@@ -38,11 +35,12 @@
 
 </script>
 
+
 <main class="background-image">
   <div class="header">
     <h1>เข้าสู่ระบบ</h1>
 
-    <form method="POST" action="?/login" on:submit={validateLogin}>
+    <form method="POST" on:submit={validateLogin}>
       <div>
         <input type="text" name="username" placeholder="Username" bind:value={username} />
         <input type="password" name="password" placeholder="Password" bind:value={password} />
@@ -53,13 +51,11 @@
       </div>
 
       <button type="submit">Login</button>
-      
     </form>
 
     <a href="/register">Register</a>
   </div>
 </main>
-
 
 <style>
 .background-image {
