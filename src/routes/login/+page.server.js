@@ -9,7 +9,7 @@ export const actions = {
     const username = form.get('username')?.trim();
     const password = form.get('password')?.trim();
 
-    // ❌ ถ้าช่องว่าง ให้แสดง error
+    
     if (!username || !password) {
       return fail(400, { error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     }
@@ -23,12 +23,12 @@ export const actions = {
       }
     }
 
-    // ❌ ไม่พบ user หรือ password ไม่ตรง
+ 
     if (!foundUser) {
       return fail(400, { error: 'Username หรือ Password ไม่ถูกต้อง' });
     }
 
-    // ✔ ตั้ง session cookie
+  
     cookies.set('userid', foundUser.userid, {
       path: '/',
       httpOnly: true,
