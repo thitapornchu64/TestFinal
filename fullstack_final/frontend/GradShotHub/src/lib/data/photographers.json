@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "สมชาย ถ่ายรูป",
+    "rate": "★★★★☆",
+    "status": "ว่าง",
+    "packages": {
+      "Package A": 2500,
+      "Package B": 3000,
+      "Package C": 3500,
+      "Package D": 4000,
+      "Package F": 4500
+    }
+  },
+  {
+    "id": 2,
+    "name": "สุดา แสงดี",
+    "rate": "★★★★★",
+    "status": "ว่าง",
+    "packages": {
+      "Package A": 2800,
+      "Package B": 3800,
+      "Package C": 4000,
+      "Package D": 4500,
+      "Package E": 5000,
+      "Package F": 4500
+    }
+  },
+  {
+    "id": 3,
+    "name": "นกน้อย โฟกัส",
+    "rate": "★★★☆☆",
+    "status": "ไม่ว่าง",
+    "packages": {
+      "Package A": 1800,
+      "Package B": 2500
+    }
+  }
+]
