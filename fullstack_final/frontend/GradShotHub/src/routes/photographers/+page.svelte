@@ -14,7 +14,7 @@
     } else {
       alert(`${photo.name} ไม่ว่าง กรุณาเลือกช่างภาพอื่น`);
     }
-  }
+  } 
 </script>
 
 <div class="container">

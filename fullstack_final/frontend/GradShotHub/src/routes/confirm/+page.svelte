@@ -1,56 +1,81 @@
 <script>
-  // Props ที่รับมาจากหน้าจอก่อนหน้า (สมมติข้อมูล)
+  import { page } from '$app/stores';
+  import { onMount } from 'svelte';
+
   export let userData = {
-      username: "คุณมานะ",
-      email: "mana@example.com"
-  };
-  export let bookingDetails = {
-      photographer: "สมชาย ถ่ายรูป",
-      time: "2025-12-10, 10:00 - 12:00",
-      location: "หอสมุดกลาง ม.A",
-      package: "Package A (ถ่ายเดี่ยว 2 ชม.)",
-      totalPrice: "2,500 บาท"
+      username: "testuser",
+      email: "@example.com"
   };
 
-  function confirmDone() {
+  let bookingDetails = {
+      photographer: '',
+      time: '',
+      location: '',
+      package: '',
+      totalPrice: ''
+  };
+
+  onMount(() => {
+      const query = $page.url.searchParams;
+
+      const photographerName = query.get('photographerName') || '';
+      const selectedDate = query.get('selectedDate') || '';
+      const selectedSlot = query.get('selectedSlot') || '';
+      const locationInput = query.get('locationInput') || '';
+      const packageType = query.get('packageType') || '';
+      const photographerPrice = query.get('photographerPrice') || '';
+
+      bookingDetails = {
+          photographer: photographerName,
+          time: selectedDate && selectedSlot ? `${selectedDate}, ${selectedSlot}` : '',
+          location: locationInput,
+          package: packageType,
+          totalPrice: photographerPrice ? `${photographerPrice} บาท` : ''
+      };
+  });
+
+  function confirmDone(event) {
+      event.preventDefault();
       alert('✅ การจองเสร็จสมบูรณ์แล้ว!');
   }
 </script>
 
-
 <div class="container">
   <h2>Confirm Booking</h2>
 
-  <div class="detail-card">
-    <div class="detail-row">
-      <span class="label">User:</span>
-      <span class="value">{userData.username} ({userData.email})</span>
-    </div>
-    <div class="detail-row">
-      <span class="label">Photographer:</span>
-      <span class="value">{bookingDetails.photographer}</span>
-    </div>
-    <div class="detail-row">
-      <span class="label">Time:</span>
-      <span class="value">{bookingDetails.time}</span>
-    </div>
-    <div class="detail-row">
-      <span class="label">Location:</span>
-      <span class="value">{bookingDetails.location}</span>
-    </div>
-    <div class="detail-row">
-      <span class="label">Package:</span>
-      <span class="value">{bookingDetails.package}</span>
-    </div>
+  <form on:submit={confirmDone}>
+    <div class="detail-card">
+      <div class="detail-row">
+        <span class="label">User:</span>
+        <span class="value">{userData.username} ({userData.email})</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Photographer:</span>
+        <span class="value">{bookingDetails.photographer}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Slots-Time:</span>
+        <span class="value">{bookingDetails.time}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Package:</span>
+        <span class="value">{bookingDetails.package}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Location:</span>
+        <span class="value">{bookingDetails.location}</span>
+      </div>
+      
 
-    <div class="total-price">
-      Total Price: {bookingDetails.totalPrice}
+      <div class="total-price">
+        Total Price: {bookingDetails.totalPrice}
+      </div>
     </div>
-  </div>
-  
-  <button on:click={confirmDone}>
-    Done
-  </button>
+    
+    <button type="submit" class="submit-button">
+      Submit
+    </button>
+  </form>
 </div>
 
 <style>

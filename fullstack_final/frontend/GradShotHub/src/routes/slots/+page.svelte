@@ -1,6 +1,7 @@
 <script>
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { goto } from '$app/navigation'; 
 
   let photographerName = '';
   let photographerRate = '';
@@ -52,21 +53,25 @@
   }
 
   function goToNext() {
-      // @ts-ignore
-      if (selectedSlot) {
-          alert(`กำลังจอง
-ช่างภาพ: ${photographerName}
-Rate: ${photographerRate}
-Price: ${photographerPrice} บาท
-วัน: ${selectedDate}
-เวลา: ${selectedSlot}
-Package: ${packageType}
-📞 เบอร์โทรศัพท์: ${phoneInput}
-สถานที่: ${locationInput}
-หมายเหตุ: ${notesInput}`);
-      } else {
-          alert('กรุณาเลือกวันและเวลาที่ต้องการ');
-      }
+    // @ts-ignore
+    if (!selectedSlot) {
+      alert('กรุณาเลือกวันและเวลาที่ต้องการ');
+      return;
+    }
+    
+    const params = new URLSearchParams({
+      photographerName,
+      photographerRate,
+      selectedDate,
+      selectedSlot,
+      packageType,
+      photographerPrice: photographerPrice.toString(), 
+      phoneInput,
+      locationInput,
+      notesInput
+    });
+
+    goto(`/confirm?${params.toString()}`);
   }
 </script>
 
@@ -92,6 +97,7 @@ Package: ${packageType}
   </div>
 
   <div class="time-grid">
+    <!-- svelte-ignore a11y_label_has_associated_control -->
     <label>เวลานัดเจอ:</label>
     {#each timeGrid as row}
       {#each row as time}

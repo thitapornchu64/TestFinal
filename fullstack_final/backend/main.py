@@ -15,7 +15,7 @@ def on_start():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174"],  # ใส่ URL ของ frontend SvelteKit dev server
+    allow_origins=["http://localhost:5174"],  
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  

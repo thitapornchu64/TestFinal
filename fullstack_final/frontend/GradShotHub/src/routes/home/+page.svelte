@@ -1,6 +1,6 @@
 <script>
-  export let data;  // รับจาก +page.server.js
-  let user = data.user; // ใช้ user จาก server-side load
+  export let data;  
+  let user = data.user; 
 
   // @ts-ignore
   function goTo(path) {

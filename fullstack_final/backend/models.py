@@ -21,7 +21,7 @@ class Booking(SQLModel, table=True):
     photographer_id: int
     package_id: int
     date: datetime
-    status: str = "active" 
+    location: str
 
 class PhotographerSlot(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)

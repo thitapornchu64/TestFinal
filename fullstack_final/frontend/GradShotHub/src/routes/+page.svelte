@@ -2,12 +2,12 @@
   // @ts-ignore
   import { onMount } from "svelte";
 
-  let mode = "login"; // "login" หรือ "register"
+  let mode = "login"; // login หรือ register
   let name = "";
   let email = "";
   let password = "";
   let message = "";
-  let messageType = ""; // "success" หรือ "error"
+  let messageType = ""; // success หรือ error
 
   function toggleMode() {
     mode = mode === "login" ? "register" : "login";
